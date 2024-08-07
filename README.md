@@ -15,23 +15,6 @@
 5. You will see a table for cafes & Employees
 =======
 
-#Swagger Documentation available on [http:](http://localhost:5005/swagger/index.html)
-![image](https://github.com/user-attachments/assets/c468a304-e316-4f87-9b70-9c4e8f121f3a)
-
-##UI - Sample Pages:
-#Cafes / Home Page
-<img width="1786" alt="image" src="https://github.com/user-attachments/assets/4bce60e8-2ae1-4249-9844-b0eb676457e0">
-
-
-#Employees
-![image](https://github.com/user-attachments/assets/b551379d-811c-4aaa-a54a-8056ee0df081)
-
-#Add / Edit Employee
-![image](https://github.com/user-attachments/assets/4cacfd9a-4c31-4de1-a4a6-0658cf9f5da4)
-
-#Add / Edit Cafe
-![image](https://github.com/user-attachments/assets/28c6e676-bfa4-45c3-9c07-ad318eacac3b)
-
 ##TODO:
 
 #E2E: Implement End to end test cases with Cypress / other tools 
