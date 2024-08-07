@@ -20,7 +20,8 @@
 
 ##UI - Sample Pages:
 #Cafes / Home Page
-![image](https://github.com/user-attachments/assets/b139a4f9-a56a-4042-9f05-29d72ad87dac)
+<img width="1786" alt="image" src="https://github.com/user-attachments/assets/4bce60e8-2ae1-4249-9844-b0eb676457e0">
+
 
 #Employees
 ![image](https://github.com/user-attachments/assets/b551379d-811c-4aaa-a54a-8056ee0df081)
