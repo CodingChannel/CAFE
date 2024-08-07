@@ -28,6 +28,6 @@ describe("Cafes Component", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByText("Add New Cafe")).toBeInTheDocument();
+    expect(screen.getByText("Add New Café")).toBeInTheDocument();
   });
 });

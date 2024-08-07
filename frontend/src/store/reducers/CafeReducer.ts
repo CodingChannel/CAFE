@@ -7,10 +7,18 @@ export const cafeReducer = (state: CafeState = initialCafeState, action: AppActi
   switch (action.type) {
     // Fetch Cafes
     case AppActionKind.FETCH_CAFES_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, selectedLocation: action.payload as string };
     case AppActionKind.FETCH_CAFES_SUCCESS:
       return { ...state, loading: false, cafes: action.payload as CafeDto[] };
     case AppActionKind.FETCH_CAFES_FAILURE:
+      return { ...state, loading: false, error: action.payload as string };
+
+    // Fetch Locations
+    case AppActionKind.FETCH_LOCATIONS_REQUEST:
+      return { ...state, loading: true };
+    case AppActionKind.FETCH_LOCATIONS_SUCCESS:
+      return { ...state, loading: false, locations: action.payload as string[] };
+    case AppActionKind.FETCH_LOCATIONS_FAILURE:
       return { ...state, loading: false, error: action.payload as string };
 
     // Fetch Single Cafe
@@ -61,6 +69,9 @@ export const cafeReducer = (state: CafeState = initialCafeState, action: AppActi
     case AppActionKind.DELETE_CAFE_FAILURE:
       return { ...state, loading: false, deleteCafeError: action.payload as string };
 
+      case AppActionKind.FETCH_CAFE_LOCATION:
+        return { ...state, loading: false, selectedLocation: action.payload as string };
+  
     default:
       return state;
   }

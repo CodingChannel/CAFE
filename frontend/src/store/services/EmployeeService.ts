@@ -3,8 +3,12 @@ import { EmployeeDto } from "../../models/dto/EmployeeDto";
 
 const API_URL = process.env.REACT_APP_API_URL + "/api";
 
-export const getEmployees = async (): Promise<EmployeeDto[]> => {
-  const response = await axios.get(`${API_URL}/employees`);
+export const getEmployees = async (cafeId?: string): Promise<EmployeeDto[]> => {
+  const url = cafeId
+    ? `${API_URL}/employees?cafeId=${cafeId}` // Add cafeId query param
+    : `${API_URL}/employees`; // Default URL for all employees
+
+  const response = await axios.get(url);
   return response.data;
 };
 

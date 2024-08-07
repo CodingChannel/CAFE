@@ -14,6 +14,7 @@ export interface EmployeeState {
   isAddSuccessful: boolean;           // Status of Add employee
   isUpdateSuccessful: boolean;        // Status of Update employee
   isDeleteSuccessful: boolean;        // Status of Delete employee
+  selectedCafeId?: string;                 // ID of the cafe currently being fetched or acted upon
 }
 
 export const initialEmployeeState: EmployeeState = {
@@ -29,5 +30,6 @@ export const initialEmployeeState: EmployeeState = {
   isFetchEmployeeSuccessful: false,
   isAddSuccessful: false,
   isUpdateSuccessful: false,
-  isDeleteSuccessful: false
+  isDeleteSuccessful: false,
+  selectedCafeId: ''
 };

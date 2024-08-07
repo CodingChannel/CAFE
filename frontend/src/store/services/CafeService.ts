@@ -3,12 +3,26 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL + "/api";
 
-export const getCafes = async (): Promise<CafeDto[]> => {
+export const getCafes = async (location?: string): Promise<CafeDto[]> => {
   try {
-    const response = await axios.get(`${API_URL}/Cafes`);
+    const url = location
+      ? `${API_URL}/cafes?location=${location}` // Add location query param
+      : `${API_URL}/cafes`; // Default URL for all cafes
+
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching cafes:", error);
+    throw error;
+  }
+};
+
+export const getLocations = async (): Promise<string[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/cafes/distinct-locations`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching distinct locations}:`, error);
     throw error;
   }
 };

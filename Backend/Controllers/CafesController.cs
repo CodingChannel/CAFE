@@ -10,12 +10,21 @@ namespace CAFE.Backend.Controllers
     public class CafesController : ControllerBase
     {
         private readonly ICafeService _cafeService;
+        private readonly ILocationService _locationService;
 
-        public CafesController(ICafeService cafeService)
+        public CafesController(ICafeService cafeService, ILocationService locationService )
         {
             _cafeService = cafeService;
+            _locationService = locationService;
         }
 
+
+        [HttpGet("distinct-locations")]
+        public async Task<ActionResult<List<string>>> GetDistinctLocations()
+        {
+            var locations = await _locationService.GetDistinctLocationsAsync();
+            return Ok(locations);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCafes([FromQuery] string? location)

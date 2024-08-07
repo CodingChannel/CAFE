@@ -7,7 +7,7 @@ export const employeeReducer = (state: EmployeeState = initialEmployeeState, act
   switch (action.type) {
     // Fetch Employees
     case AppActionKind.FETCH_EMPLOYEES_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true,  selectedCafeId: action.payload as string };
     case AppActionKind.FETCH_EMPLOYEES_SUCCESS:
       return { ...state, loading: false, employees: action.payload as EmployeeDto[] };
     case AppActionKind.FETCH_EMPLOYEES_FAILURE:
@@ -60,6 +60,9 @@ export const employeeReducer = (state: EmployeeState = initialEmployeeState, act
       };
     case AppActionKind.DELETE_EMPLOYEE_FAILURE:
       return { ...state, loading: false, deleteEmployeeError: action.payload as string };
+
+    case AppActionKind.FETCH_CAFE_EMPLOYEES:
+      return { ...state, loading: true, selectedCafeId: action.payload as string };
 
     default:
       return state;

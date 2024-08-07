@@ -1,19 +1,21 @@
 import { CafeDto } from "./dto/CafeDto";
 
 export interface CafeState {
-  cafes: CafeDto[];           // List of all cafes
-  currentCafe?: CafeDto;      // Currently fetched single cafe (optional)
+  cafes: CafeDto[];                   // List of all cafes
+  currentCafe?: CafeDto;              // Currently fetched single cafe (optional)
   loading: boolean;                   // Loading state for any ongoing request
   error: string;                      // General error message
-  fetchCafeError?: string;        // Specific error for fetching a single cafe
-  addCafeError?: string;          // Specific error for adding an cafe
-  updateCafeError?: string;       // Specific error for updating an cafe
-  deleteCafeError?: string;       // Specific error for deleting an cafe
-  cafeId: string;                 // ID of the cafe currently being fetched or acted upon
-  isFetchCafeSuccessful: boolean; // Status of Fetch cafe
+  fetchCafeError?: string;            // Specific error for fetching a single cafe
+  addCafeError?: string;              // Specific error for adding an cafe
+  updateCafeError?: string;           // Specific error for updating an cafe
+  deleteCafeError?: string;           // Specific error for deleting an cafe
+  cafeId: string;                     // ID of the cafe currently being fetched or acted upon
+  isFetchCafeSuccessful: boolean;     // Status of Fetch cafe
   isAddSuccessful: boolean;           // Status of Add cafe
   isUpdateSuccessful: boolean;        // Status of Update cafe
   isDeleteSuccessful: boolean;        // Status of Delete cafe
+  locations: string[];                  // List of all cafes
+  selectedLocation: string;                 // locationId of the cafe currently being fetched or acted upon
 }
 
 export const initialCafeState: CafeState = {
@@ -29,5 +31,7 @@ export const initialCafeState: CafeState = {
   isFetchCafeSuccessful: false,
   isAddSuccessful: false,
   isUpdateSuccessful: false,
-  isDeleteSuccessful: false
+  isDeleteSuccessful: false,
+  locations: [], // Initial empty list of locations
+  selectedLocation: ''
 };

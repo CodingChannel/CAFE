@@ -22,7 +22,7 @@ const AddEditEmployee: React.FC = () => {
       emailAddress: "",
       phoneNumber: "",
       gender: "",
-      cafeId: "",
+      cafeId: null,
       startDate: "",
     },
   });
@@ -67,6 +67,7 @@ const AddEditEmployee: React.FC = () => {
     } else {
       dispatch(addEmployeeRequest(data));
     }
+    dispatch(fetchCafes());
     navigate("/employees");
   };
 

@@ -9,7 +9,6 @@ interface EmployeeFormFieldsProps {
   errors: any;
 }
 
-
 const EmployeeFormFields: React.FC<EmployeeFormFieldsProps> = ({ control, cafes, errors }) => {
   errors = useForm<CafeDto>().formState;
   return (
@@ -84,14 +83,12 @@ const EmployeeFormFields: React.FC<EmployeeFormFieldsProps> = ({ control, cafes,
               <>
                 <RadioGroup {...field} row>
                   <FormControlLabel value="male" control={<Radio required />} label="Male" />
-                  <FormControlLabel value="female" control={<Radio  required />} label="Female" />
+                  <FormControlLabel value="female" control={<Radio required />} label="Female" />
                 </RadioGroup>
               </>
             )}
           />
-          <FormHelperText>
-            {errors.gender?.message} {"Gender is required"}
-          </FormHelperText>
+          <FormHelperText>{errors.gender?.message}</FormHelperText>
         </FormControl>
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -100,10 +97,9 @@ const EmployeeFormFields: React.FC<EmployeeFormFieldsProps> = ({ control, cafes,
           <Controller
             name="cafeId"
             control={control}
-            rules={{ required: "Assigned cafe is required" }}
             render={({ field }) => (
               <>
-                <Select {...field} label="Assigned Cafe" required>
+                <Select {...field} label="Assigned Cafe">
                   {cafes.map((cafe) => (
                     <MenuItem key={cafe.id} value={cafe.id}>
                       {cafe.name}

@@ -1,15 +1,24 @@
 import { AppAction } from "./../actions/index";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, addCafeRequest } from "../actions/CafeAction";
-import { getCafes, createCafe, updateCafe, deleteCafe, getCafeById } from "../services/CafeService";
+import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, addCafeRequest, fetchLocationsFailure, fetchLocationsSuccess } from "../actions/CafeAction";
+import { getCafes, createCafe, updateCafe, deleteCafe, getCafeById, getLocations } from "../services/CafeService";
 import { CafeDto } from "../../models/dto/CafeDto";
 
-function* fetchCafesSaga() {
+function* fetchCafesSaga(action: AppAction) {
+  const selectedLocation = action.payload ? action.payload.toString() : "";
   try {
-    const cafes: CafeDto[] = yield call(getCafes);
+    const cafes: CafeDto[] = yield call(getCafes, selectedLocation);
     yield put(fetchCafesSuccess(cafes));
   } catch (error: any) {
     yield put(fetchCafesFailure(error.message));
+  }
+}
+function* fetchLocationsSaga() {
+  try {
+    const locations: string[] = yield call(getLocations);
+    yield put(fetchLocationsSuccess(locations));
+  } catch (error: any) {
+    yield put(fetchLocationsFailure(error.message));
   }
 }
 
@@ -52,6 +61,7 @@ function* deleteCafeSaga(action: any) {
 
 function* cafeSaga() {
   yield takeLatest("FETCH_CAFES_REQUEST", fetchCafesSaga);
+  yield takeLatest("FETCH_LOCATIONS_REQUEST", fetchLocationsSaga);
   yield takeLatest("FETCH_CAFE_REQUEST", fetchCafeSaga);
   yield takeLatest("ADD_CAFE_REQUEST", addCafeSaga);
   yield takeLatest("UPDATE_CAFE_REQUEST", updateCafeSaga);

@@ -15,12 +15,14 @@ const AddEditCafe: React.FC = () => {
   const cafeState: CafeState = useSelector((state: any) => state.cafeReducer);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isSubmittingRef = useRef(false);
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     setValue,
     reset,
+    // watch,
   } = useForm<CafeDto>({
     defaultValues: {
       name: "",
@@ -38,15 +40,38 @@ const AddEditCafe: React.FC = () => {
     }
   }, [id, isEdit, dispatch]);
 
+  const [error, setError] = useState<string | null>(null);
+  const [fileData, setFileData] = useState<string | null>(null);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      // Validate file type
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        setError("Only JPEG and PNG files are allowed.");
+        setFileData(null);
+        return;
+      }
+
+      // Validate file size
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSize) {
+        setError("File size exceeds 2MB.");
+        setFileData(null);
+        return;
+      }
+
+      // File is valid, process it
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target && typeof event.target.result === "string") {
-          setValue("logo", event.target.result);
+          setFileData(event.target.result);
+          setError(null);
         }
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -87,18 +112,34 @@ const AddEditCafe: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (isDirty) {
+        event.preventDefault();
+        event.returnValue = ""; // Show the browser's default confirmation dialog
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
+
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
       <Typography variant="h4" gutterBottom>
         {isEdit ? "Edit Cafe" : "Add New Cafe"}
       </Typography>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(onSubmit)();
         }}
       >
-        <CafeFormFields control={control} errors={errors} handleFileChange={handleFileChange} />
+        <CafeFormFields control={control} errors={errors} handleFileChange={handleFileChange} error={error} fileData={fileData} />
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Button variant="contained" color="secondary" onClick={() => navigate("/cafes")}>
             Cancel

@@ -4,9 +4,10 @@ import { fetchEmployeesSuccess, fetchEmployeesFailure, addEmployeeSuccess, addEm
 import { getEmployees, createEmployee, updateEmployee, deleteEmployee, getEmployeeById } from "../services/EmployeeService";
 import { EmployeeDto } from "../../models/dto/EmployeeDto";
 
-function* fetchEmployeesSaga() {
+function* fetchEmployeesSaga(action: AppAction) {
+  const cafeId = action.payload ? action.payload.toString() : "";
   try {
-    const employees: EmployeeDto[] = yield call(getEmployees);
+    const employees: EmployeeDto[] = yield call(getEmployees, cafeId);
     yield put(fetchEmployeesSuccess(employees));
   } catch (error: any) {
     yield put(fetchEmployeesFailure(error.message));

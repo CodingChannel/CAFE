@@ -20,14 +20,14 @@ namespace CAFE.Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees([FromQuery] string? cafe)
+        public async Task<IActionResult> GetAllEmployees([FromQuery] string? cafeId)
         {
             var employees = await _employeeService.GetAllEmployeesAsync();
 
-            if (!string.IsNullOrEmpty(cafe))
+            if (!string.IsNullOrEmpty(cafeId))
             {
                 // Filter employees by cafe
-                employees = employees.Where(e => e.Cafe.Name.Equals(cafe, StringComparison.OrdinalIgnoreCase)).ToList();
+                employees = employees.Where(e => e.Cafe?.Id.ToString().ToLower() == cafeId.ToLower()).ToList();
             }
 
             // Calculate days worked and sort employees by the number of days worked in descending order
@@ -64,7 +64,7 @@ namespace CAFE.Backend.Controllers
             {
                 var employee = employeeDto.ToEmployee();
 
-                if (employeeDto.CafeId.HasValue)
+                if (employeeDto.CafeId.HasValue && !string.IsNullOrEmpty(employeeDto.CafeId.Value.ToString()))
                 {
                     var cafe = await _cafeService.GetCafeByIdAsync(employeeDto.CafeId.Value);
                     if (cafe == null)

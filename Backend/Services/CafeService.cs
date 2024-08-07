@@ -40,7 +40,6 @@ namespace CAFE.Backend.Services
         public async Task<CafeDto?> GetCafeByIdAsync(Guid id)
         {
             var cafe = await _repository.GetByIdAsync(id);
-            Console.WriteLine(cafe.Id);
 
             if (cafe == null)
             {

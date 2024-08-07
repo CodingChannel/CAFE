@@ -18,7 +18,7 @@ export interface EmployeeDto {
   phoneNumber: string;
   startDate?: Date | string;
   daysWorked?: number;
-  cafeId?: string; // Optional cafe name
+  cafeId?: string | null; // Optional cafe name
   cafe?: CafeDto;
 }
 

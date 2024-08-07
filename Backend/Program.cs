@@ -46,6 +46,7 @@ builder.Services.AddDbContext<CafeEmployeeContext>(options =>
 ));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ICafeService, CafeService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddSwaggerGen(c =>
@@ -66,7 +67,6 @@ app.UseSwaggerUI();
 app.UseRouting();
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
-// app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

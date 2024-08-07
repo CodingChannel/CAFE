@@ -2,8 +2,9 @@ import { AppActionKind } from "../constants";
 import { EmployeeDto } from "../../models/dto/EmployeeDto";
 
 // Fetch Employees Actions
-export const fetchEmployees = () => ({
+export const fetchEmployees = (cafeId?: string | undefined | null) => ({
   type: AppActionKind.FETCH_EMPLOYEES_REQUEST,
+  payload: cafeId,
 });
 
 export const fetchEmployeesSuccess = (employees: EmployeeDto[]) => ({
@@ -22,7 +23,7 @@ export const setEmployeeToBeEdited = (employee: EmployeeDto) => ({
 });
 export const setEmployeeId = (id: string) => ({
   type: AppActionKind.FETCH_EMPLOYEE_REQUEST,
-  payload : id
+  payload: id,
 });
 
 export const fetchEmployeeSuccess = (isFetchSuccessful: boolean) => ({
@@ -81,4 +82,9 @@ export const deleteEmployeeSuccess = (id: string) => ({
 export const deleteEmployeeFailure = (error: string) => ({
   type: AppActionKind.DELETE_EMPLOYEE_FAILURE,
   payload: error,
+});
+
+export const setSelectedCafeEmployees = (cafeId?: string | undefined | null) => ({
+  type: AppActionKind.FETCH_CAFE_EMPLOYEES,
+  payload: cafeId,
 });

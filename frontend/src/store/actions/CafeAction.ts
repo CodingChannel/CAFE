@@ -2,8 +2,9 @@ import { AppActionKind } from "../constants";
 import { CafeDto } from "../../models/dto/CafeDto";
 
 // Fetch Cafes Actions
-export const fetchCafes = () => ({
+export const fetchCafes = (selectedLocation?: string | undefined | null) => ({
   type: AppActionKind.FETCH_CAFES_REQUEST,
+  payload: selectedLocation,
 });
 
 export const fetchCafesSuccess = (cafes: CafeDto[]) => ({
@@ -16,13 +17,27 @@ export const fetchCafesFailure = (error: string) => ({
   payload: error,
 });
 
+export const fetchLocations = () => ({
+  type: AppActionKind.FETCH_LOCATIONS_REQUEST,
+});
+
+export const fetchLocationsSuccess = (locations: string[]) => ({
+  type: AppActionKind.FETCH_LOCATIONS_SUCCESS,
+  payload: locations,
+});
+
+export const fetchLocationsFailure = (error: string) => ({
+  type: AppActionKind.FETCH_LOCATIONS_FAILURE,
+  payload: error,
+});
+
 export const setCafeToBeEdited = (cafe: CafeDto) => ({
   type: AppActionKind.SET_CAFE_TOBE_EDITED,
   payload: cafe,
 });
 export const setCafeId = (id: string) => ({
   type: AppActionKind.FETCH_CAFE_REQUEST,
-  payload : id
+  payload: id,
 });
 
 export const fetchCafeSuccess = (isFetchSuccessful: boolean) => ({
@@ -81,4 +96,9 @@ export const deleteCafeSuccess = (id: string) => ({
 export const deleteCafeFailure = (error: string) => ({
   type: AppActionKind.DELETE_CAFE_FAILURE,
   payload: error,
+});
+
+export const setSelectedCafeLocation = (selectedLocation?: string | undefined | null) => ({
+  type: AppActionKind.FETCH_CAFE_LOCATION,
+  payload: selectedLocation,
 });
