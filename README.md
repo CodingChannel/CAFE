@@ -13,6 +13,8 @@
 
 4. Open the browser and go to http://localhost:3000
 5. You will see a table for cafes & Employees
+
+
 =======
 
 ##TODO:
