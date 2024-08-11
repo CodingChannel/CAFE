@@ -1,6 +1,6 @@
 import { AppAction } from "./../actions/index";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, addCafeRequest, fetchLocationsFailure, fetchLocationsSuccess } from "../actions/CafeAction";
+import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, fetchLocationsFailure, fetchLocationsSuccess } from "../actions/CafeAction";
 import { getCafes, createCafe, updateCafe, deleteCafe, getCafeById, getLocations } from "../services/CafeService";
 import { CafeDto } from "../../models/dto/CafeDto";
 

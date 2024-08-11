@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { useNavigate } from "react-router-dom";
 import { ColDef, ColGroupDef } from "ag-grid-community";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCafeRequest, fetchCafes, setSelectedCafeLocation } from "../store/actions/CafeAction";
+import { deleteCafeRequest, fetchCafes, fetchLocations, setSelectedCafeLocation } from "../store/actions/CafeAction";
 import { CafeState } from "../models/CafeState";
 import ConfirmationDialog from "../components/shared/ConfirmationDialog";
 import SearchableDropdown from "../components/shared/SearchableDropdown";
@@ -19,10 +19,21 @@ const Cafes: React.FC = () => {
 
   const [open, setOpen] = useState(false);
   const [selectedCafeId, setSelectedCafeId] = useState<string | null>(null);
+  const gridApiRef = useRef(null);
+
+  const onGridReady = (params: any) => {
+    gridApiRef.current = params.api;
+    params.api.sizeColumnsToFit(); // Auto-size columns to fit the grid width
+  };
+  useEffect(() => {
+    dispatch(fetchLocations());
+    dispatch(fetchCafes());
+  }, []);
 
   useEffect(() => {
+    // Fetch cafes only if selectedLocation changes
     dispatch(fetchCafes(cafeState.selectedLocation));
-  }, [cafeState.selectedLocation, dispatch]);
+  }, [cafeState.selectedLocation]);
 
   const handleClickOpen = (id: string) => {
     setSelectedCafeId(id);
@@ -38,18 +49,22 @@ const Cafes: React.FC = () => {
     if (selectedCafeId) {
       dispatch(deleteCafeRequest(selectedCafeId));
       dispatch(fetchCafes(cafeState.selectedLocation));
-      setOpen(false);
-      setSelectedCafeId(null);
+      handleClose();
     }
   };
-  const handleSelectedCafe = (id?: string | undefined | null) => {
+
+  const handleSelectedCafe = (id?: string | null) => {
+    console.log(id);
     dispatch(setSelectedCafeEmployees(id));
     navigate(`/employees`);
   };
 
   const handleCafeButton = () => {
     dispatch(setSelectedCafeLocation(undefined));
-    navigate("/cafes");
+  };
+
+  const handleItemSelected = (item: string | null) => {
+    dispatch(setSelectedCafeLocation(item));
   };
 
   const columns: ColDef[] | ColGroupDef[] = [
@@ -60,11 +75,13 @@ const Cafes: React.FC = () => {
       headerName: "Employees",
       field: "employees",
       cellRenderer: (params: any) => (
-        <>
-          <Button variant="contained" color="primary" onClick={() => handleSelectedCafe(params.data.id)}>
-            {params.value} Employees
-          </Button>
-        </>
+        <Tooltip title={params.value ? "" : "No Employees exist for this cafe"} arrow>
+          <span>
+            <Button variant="contained" color="primary" onClick={() => handleSelectedCafe(params.data.id)} disabled={!params.value}>
+              {params.value ? `${params.value} Employees` : "No Employees"}
+            </Button>
+          </span>
+        </Tooltip>
       ),
     },
     { headerName: "Location", field: "location" },
@@ -87,20 +104,18 @@ const Cafes: React.FC = () => {
   return (
     <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
       <div style={{ display: "flex", paddingLeft: "20px", justifyContent: "flex-start" }}>
-        <h1 onClick={handleCafeButton}>Cafes</h1>
+        <h1 onClick={handleCafeButton} data-testid="page-cafes">
+          Cafes
+        </h1>
       </div>
       <div style={{ display: "flex", paddingBottom: "20px", paddingRight: "20px", justifyContent: "flex-end" }}>
-        <div style={{ display: "flex", paddingRight: "20px", justifyContent: "flex-end" }}>
-          <SearchableDropdown />
-        </div>
-        <div style={{ display: "flex", paddingRight: "20px", justifyContent: "flex-end" }}>
-          <Button variant="contained" color="primary" onClick={() => navigate("/cafes/add")} style={{ display: "flex", justifyContent: "flex-start" }}>
-            Add New Café
-          </Button>
-        </div>
+        <SearchableDropdown items={cafeState.locations} placeholderItemText={`Search Location`} selectedItem={cafeState?.selectedLocation} setSelectedItem={handleItemSelected} />
+        <Button variant="contained" data-testid="button-add-new-cafe" color="primary" onClick={() => navigate("/cafes/add")} style={{ marginLeft: "20px" }}>
+          Add New Café
+        </Button>
       </div>
 
-      <AgGridReact rowData={cafeState.cafes} columnDefs={columns} pagination={true} />
+      <AgGridReact rowData={cafeState.cafes} columnDefs={columns} pagination={true} onGridReady={onGridReady} />
 
       <ConfirmationDialog open={open} title="Delete Cafe" description="Are you sure you want to delete this cafe?" onClose={handleClose} onConfirm={handleDelete} />
     </div>

@@ -1,32 +1,23 @@
-import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import Cafes from "./pages/Cafes";
-import Employees from "./pages/Employees";
-import NavBar from "./components/NavBar";
-import AddEditEmployee from "./components/EmployeeForm";
-import AddEditCafe from "./components/CafeForm";
+// src/App.tsx
 
-function App() {
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import NavBar from './components/NavBar'; 
+import RoutesComponent from './utils/RoutesComponent';
+
+const App: React.FC = () => {
   return (
-    /*
-    TODO: Write tests for validations
-    */
-    <div className="App">
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Cafes />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-
-        <Route path="/cafes" element={<Cafes />} />
-        <Route path="/cafes/add" element={<AddEditCafe />} />
-        <Route path="/cafes/:id" element={<AddEditCafe />} />
-
-        <Route path="/employees" element={<Employees />} />
-        <Route path="/employees/add" element={<AddEditEmployee />} />
-        <Route path="/employees/:id" element={<AddEditEmployee />} />
-      </Routes>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div className="App">
+          <NavBar />
+          <RoutesComponent />
+        </div>
+      </Router>
+    </Provider>
   );
-}
+};
 
 export default App;

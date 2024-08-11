@@ -7,6 +7,7 @@ import CafeFormFields from "./CafeFormFields";
 import { useDispatch, useSelector } from "react-redux";
 import { CafeState } from "../models/CafeState";
 import { setCafeId, updateCafeRequest, addCafeRequest } from "../store/actions/CafeAction";
+import ImageUtils from "../utils/ImageUtils";
 
 const AddEditCafe: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -20,14 +21,13 @@ const AddEditCafe: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-    setValue,
     reset,
     // watch,
   } = useForm<CafeDto>({
     defaultValues: {
       name: "",
       description: "",
-      logo: "https://via.placeholder.com/150",
+      logo: "https://via.placeholder.com/150", //Default image
       location: "",
       employees: 0,
     },
@@ -97,6 +97,23 @@ const AddEditCafe: React.FC = () => {
     setIsSubmitting(true);
     isSubmittingRef.current = true; // Set the ref to true
 
+    // Convert fileData (base64) to a blob or use it directly
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    if (fileData) {
+      const blob = ImageUtils.base64ToBlob(fileData);
+      // console.log(blob);
+      // console.log(fileData);
+      data.logo = fileData;
+      formData.append("logo", blob, "logo.jpg"); // Provide a filename if needed
+    } else if (data.logo && !fileData) {
+      formData.append("logo", data.logo);
+    }
+
+    formData.append("location", data.location);
+    formData.append("employees", data.employees.toString());
+
     try {
       if (isEdit) {
         dispatch(updateCafeRequest(data));
@@ -139,7 +156,7 @@ const AddEditCafe: React.FC = () => {
           handleSubmit(onSubmit)();
         }}
       >
-        <CafeFormFields control={control} errors={errors} handleFileChange={handleFileChange} error={error} fileData={fileData} />
+        <CafeFormFields control={control} errors={errors} handleFileChange={handleFileChange} error={error} fileData={fileData || cafeState?.currentCafe?.logo} />
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Button variant="contained" color="secondary" onClick={() => navigate("/cafes")}>
             Cancel

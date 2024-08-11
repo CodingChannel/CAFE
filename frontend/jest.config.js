@@ -1,10 +1,15 @@
 module.exports = {
   preset: "ts-jest",
-  testEnvironment: "node",
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+    "^@src/(.*)$": "<rootDir>/src/$1",
+  },
+  testEnvironment: "jsdom",
   transform: {
-    "^.+\\.ts$": "ts-jest",
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  clearMocks: true,
+  transformIgnorePatterns: ["src/node_modules/(?!axios)/"],
+  setupFilesAfterEnv: ["src/jest.setup.ts"],
 };

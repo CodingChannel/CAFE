@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -22,7 +22,12 @@ const Employees: React.FC = () => {
     setOpen(false);
     setSelectedEmployeeId(null);
   };
+  const gridApiRef = useRef(null);
 
+  const onGridReady = (params: any) => {
+    gridApiRef.current = params.api;
+    params.api.sizeColumnsToFit(); // Auto-size columns to fit the grid width
+  };
   const handleClickOpen = (id: string) => {
     setSelectedEmployeeId(id);
     setOpen(true);
@@ -96,7 +101,7 @@ const Employees: React.FC = () => {
         </Button>
       </div>
 
-      <AgGridReact rowData={employeeState.employees} columnDefs={columns} pagination={true} />
+      <AgGridReact rowData={employeeState.employees} columnDefs={columns} pagination={true} onGridReady={onGridReady} />
 
       <ConfirmationDialog open={open} title="Delete Cafe" description="Are you sure you want to delete this employee?" onClose={handleClose} onConfirm={handleDelete} />
     </div>

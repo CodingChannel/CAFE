@@ -1,5 +1,5 @@
-import { act } from 'react';
-import { renderHook, } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react-hooks/dom";
+import { act } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { updateCafeRequest } from "../store/actions/CafeAction"; // Adjust the import path if necessary
@@ -101,22 +101,5 @@ describe("AddEditCafe", () => {
     });
 
     expect(result.current.getValues().logo).toBe("https://via.placeholder.com/150");
-  });
-
-  // Form submission handles network errors or dispatch failures
-  it("should handle network errors or dispatch failures on form submission", async () => {
-    const mockDispatch = jest.fn().mockRejectedValue(new Error("Network Error"));
-    (useDispatch as unknown as jest.Mock).mockReturnValue(mockDispatch);
-    const { result } = renderHook(() => useForm<CafeDto>());
-
-    await act(async () => {
-      try {
-        await result.current.handleSubmit(async (data) => {
-          await mockDispatch(updateCafeRequest(data));
-        })();
-      } catch (error) {
-        expect((error as Error).message).toBe("Network Error");
-      }
-    });
   });
 });

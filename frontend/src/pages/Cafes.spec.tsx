@@ -18,16 +18,8 @@ describe("Cafes Component", () => {
       </Provider>
     );
     expect(screen.getByText("Cafes")).toBeInTheDocument();
+    expect(screen.getByTestId("page-cafes")).toBeInTheDocument();
+    expect(screen.getByTestId("button-add-new-cafe")).toBeInTheDocument();
   });
-
-  it("renders 'Add New Cafe' button", () => {
-    render(
-      <Provider store={mockStore}>
-        <MemoryRouter>
-          <Cafes />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.getByText("Add New Café")).toBeInTheDocument();
-  });
+ 
 });

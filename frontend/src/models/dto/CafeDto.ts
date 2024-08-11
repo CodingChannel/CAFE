@@ -5,7 +5,7 @@ export interface CafeDto {
   name: string;
   description: string;
   employees: number;
-  logo?: string; // Optional logo path
+  logo?: string | Blob; // Optional logo path
   location: string;
 }
 
