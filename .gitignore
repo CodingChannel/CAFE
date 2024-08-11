@@ -1,0 +1,9 @@
+
+/frontend/node_modules
+/frontend/node_modules
+/frontend/node_modules/.cache
+/frontend/node_modules/.cache/default-development
+frontend/node_modules/.cache/default-development/0.pack
+*.pack
+frontend/node_modules/.cache/default-development/index.pack
+frontend/node_modules/.cache/default-development/index.pack
