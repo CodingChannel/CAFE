@@ -1,6 +1,6 @@
 import { AppAction } from "./../actions/index";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchEmployeesSuccess, fetchEmployeesFailure, addEmployeeSuccess, addEmployeeFailure, updateEmployeeSuccess, updateEmployeeFailure, deleteEmployeeSuccess, deleteEmployeeFailure, fetchEmployeeFailure, fetchEmployeeSuccess, setEmployeeToBeEdited, addEmployeeRequest } from "../actions/EmployeeAction";
+import { fetchEmployeesSuccess, fetchEmployeesFailure, addEmployeeSuccess, addEmployeeFailure, updateEmployeeSuccess, updateEmployeeFailure, deleteEmployeeSuccess, deleteEmployeeFailure, fetchEmployeeFailure, fetchEmployeeSuccess, setEmployeeToBeEdited, addEmployeeRequest, fetchEmployees } from "../actions/EmployeeAction";
 import { getEmployees, createEmployee, updateEmployee, deleteEmployee, getEmployeeById } from "../services/EmployeeService";
 import { EmployeeDto } from "../../models/dto/EmployeeDto";
 
@@ -28,6 +28,7 @@ function* addEmployeeSaga(action: any) {
   try {
     yield call(createEmployee, action.payload);
     yield put(addEmployeeSuccess(true));
+    yield put(fetchEmployees());
   } catch (error: any) {
     yield put(addEmployeeFailure(error.message));
   }
@@ -37,6 +38,7 @@ function* updateEmployeeSaga(action: any) {
   try {
     yield call(updateEmployee, action.payload);
     yield put(updateEmployeeSuccess(true));
+    yield put(fetchEmployees());
   } catch (error: any) {
     yield put(updateEmployeeFailure(error.message));
   }
@@ -46,6 +48,7 @@ function* deleteEmployeeSaga(action: any) {
   try {
     yield call(deleteEmployee, action.payload);
     yield put(deleteEmployeeSuccess(action.payload));
+    yield put(fetchEmployees());
   } catch (error: any) {
     yield put(deleteEmployeeFailure(error.message));
   }

@@ -13,10 +13,10 @@ builder.Services.AddControllers();
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins",
+    options.AddPolicy("AllowAnyOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000") // Add your frontend URLs here
+            builder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
@@ -25,16 +25,7 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// CORS Policies
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-    });
-});
-
+ 
 builder.Services.AddDbContext<CafeEmployeeContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     new MySqlServerVersion(new Version(8, 0, 21)),
@@ -65,7 +56,7 @@ using (var scope = app.Services.CreateScope())
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRouting();
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAnyOrigin");
 app.UseAuthorization();
 app.MapControllers();
 

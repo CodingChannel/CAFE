@@ -1,6 +1,6 @@
 import { AppAction } from "./../actions/index";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, fetchLocationsFailure, fetchLocationsSuccess } from "../actions/CafeAction";
+import { fetchCafesSuccess, fetchCafesFailure, addCafeSuccess, addCafeFailure, updateCafeSuccess, updateCafeFailure, deleteCafeSuccess, deleteCafeFailure, fetchCafeFailure, fetchCafeSuccess, setCafeToBeEdited, fetchLocationsFailure, fetchLocationsSuccess, fetchCafes } from "../actions/CafeAction";
 import { getCafes, createCafe, updateCafe, deleteCafe, getCafeById, getLocations } from "../services/CafeService";
 import { CafeDto } from "../../models/dto/CafeDto";
 
@@ -36,6 +36,7 @@ function* addCafeSaga(action: any) {
   try {
     yield call(createCafe, action.payload);
     yield put(addCafeSuccess(true));
+    yield put(fetchCafes());
   } catch (error: any) {
     yield put(addCafeFailure(error.message));
   }
@@ -45,6 +46,7 @@ function* updateCafeSaga(action: any) {
   try {
     yield call(updateCafe, action.payload);
     yield put(updateCafeSuccess(true));
+    yield put(fetchCafes());
   } catch (error: any) {
     yield put(updateCafeFailure(error.message));
   }
@@ -54,6 +56,7 @@ function* deleteCafeSaga(action: any) {
   try {
     yield call(deleteCafe, action.payload);
     yield put(deleteCafeSuccess(action.payload));
+    yield put(fetchCafes());
   } catch (error: any) {
     yield put(deleteCafeFailure(error.message));
   }
